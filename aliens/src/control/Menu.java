@@ -40,6 +40,7 @@ public class Menu extends JFrame implements KeyListener{
         this.setSize(ANCHO_FRAME, ALTO_FRAME);
         this.setLocationRelativeTo(this);
         this.setVisible(true);
+        addKeyListener(this);
     }
     
     public void paint(Graphics g) {
@@ -50,7 +51,8 @@ public class Menu extends JFrame implements KeyListener{
 
         //cadenas de texto dibujadas en el frame
         graficos.setColor(Color.CYAN);
-        graficos.drawString("Mejor puntaje: " + mejorPuntaje, 275, 250);
+        graficos.drawString("MEJOR PUNTAJE: " + mejorPuntaje, 275, 250);
+        graficos.drawString("PRESIONE LA TECLA ESPACIO PARA EMPEZAR EL JUEGO", 165, 270);
 
         //dibujamos el buffer que contiene todo
         g.drawImage(imgBuffered, 0, 0, this);    
@@ -61,6 +63,8 @@ public class Menu extends JFrame implements KeyListener{
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             juegoIniciado = true;
             this.setVisible(false);
+            Aliens aliens = new Aliens("Aliens Invasores");
+            aliens.nuevaRonda();
         }
     }
     

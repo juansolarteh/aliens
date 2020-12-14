@@ -14,10 +14,8 @@ import javax.swing.JFrame;
  * @author hugo
  */
 public class Jugar{
-    static JFrame jf;
+    static Menu menu;
     public static void main(String[] args) {
-        Menu menu = new Menu("Aliens Invasores");
-        Aliens aliens = new Aliens("Aliens Invasores");
-        aliens.nuevaRonda();
+        menu = new Menu("Aliens Invasores");
     }
 }
