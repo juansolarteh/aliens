@@ -19,6 +19,7 @@ public class Armada implements Globales {
     Enemigo[][] armandaEnemiga = new Enemigo[ALIENS_POR_FILA][FILAS_ALIENS];
     Aliens aliens = null;
     String direction = "RIGHT";
+    private int puntajeArmada = 0;
 
     public Armada(Aliens ai) {
         this.aliens = ai;
@@ -33,7 +34,7 @@ public class Armada implements Globales {
             double inicioEnimigoX = 1;
             Image imgEnemigo = new javax.swing.ImageIcon(ALIEN_IMG[i]).getImage();
             for (int j = 0; j < FILAS_ALIENS; j++) {
-                armandaEnemiga[i][j] = new Enemigo(imgEnemigo, aliens);
+                armandaEnemiga[i][j] = new Enemigo(imgEnemigo, aliens, (5-i)*10);
                 armandaEnemiga[i][j].setPosition((int)(inicioEnimigoX * ANCHO_ALIEN), (int)(inicioEnimigoY* ALTURA_ALIEN));
                 inicioEnimigoX += 1.5;
             }
@@ -102,7 +103,7 @@ public class Armada implements Globales {
     private void moveDown(){
        for(Enemigo[] enemyRow : armandaEnemiga)
             for(Enemigo enemy: enemyRow)
-                enemy.setPosicionY(enemy.getYPos() + DESPLAZAMIENTO_ALIENS);//cada enemigo se mueve unos pixeles hacia abajo
+                enemy.setPosicionY(enemy.getYPos() + (DESPLAZAMIENTO_ALIENS * 2));//cada enemigo se mueve unos pixeles hacia abajo
     }
     
     public int getXposEnemyLeft(){
@@ -118,6 +119,14 @@ public class Armada implements Globales {
             for (int j = 0; j < ALIENS_POR_FILA; j++)
                 if(armandaEnemiga[j][i].isAbatido() == false)
                     return armandaEnemiga[j][i].getXPos();
+        return 0;
+    }
+    
+    public int getYposEnemyDown(){
+        for (int i = ALIENS_POR_FILA-1; i >= 0; i--) 
+            for (int j = 0; j < FILAS_ALIENS; j++)
+                if(armandaEnemiga[i][j].isAbatido() == false)
+                    return armandaEnemiga[i][j].getYPos();
         return 0;
     }
     

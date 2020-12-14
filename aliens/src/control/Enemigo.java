@@ -23,11 +23,14 @@ public class Enemigo implements Globales{
     private Image alienImage = null;
 
     Aliens aliens = null;
+    
+    private int puntaje;
 
     //Constructor
-    public Enemigo(Image imagenAlien, Aliens aliens) {
+    public Enemigo(Image imagenAlien, Aliens aliens, int puntaje) {
         this.alienImage = imagenAlien;
         this.aliens = aliens;
+        this.puntaje = puntaje;
     }
     
     //setea la posición de dicho alien en pantalla

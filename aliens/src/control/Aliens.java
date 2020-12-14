@@ -41,17 +41,24 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
     private int ronda;
     private int velocidad;
     
+    private Menu menu;
+    
     public Armada getArmada(){
         return armada;
     }
+    
+    public int getPuntaje(){
+        return puntaje;
+    }
 
-    public Aliens(String titulo) {
+    public Aliens(String titulo, Menu menu) {
         super(titulo);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
         Image iconoAplicacion = Toolkit.getDefaultToolkit().getImage(ICONO_APLICATION);
         this.setIconImage(iconoAplicacion);
-
+        this.menu = menu;
+        
         //Imagen de fondo
         thread = new Thread(this);
         ronda = 0;
@@ -61,6 +68,8 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
     }
 
     public void paint(Graphics g) {
+        updateEnemyNumber();
+        
         //El fondo del frame de juego
         graficos.setColor(Color.black);
         graficos.fillRect(0, 0, ANCHO_FRAME, ALTO_FRAME);
@@ -74,12 +83,19 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
         graficos.drawString("Ronda: " + ronda, 20, 50);
         graficos.drawString("Vidas: " + vidas, 20, 70);
         graficos.drawString("Aliens: " + numAliens, 20, 90);
+        graficos.drawString("Puntaje: " + puntaje, 20, 110);
 
         //dibujamos el buffer que contiene todo
         g.drawImage(imgBuffered, 0, 0, this);
         
     }
     //-----------------------------------
+    
+    
+    
+    public void updateEnemyNumber(){
+        numAliens = armada.getEnemyCount();
+    }
 
     public void nuevaRonda() {
         //Crea la nave
@@ -88,7 +104,7 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
        
 
         //cantadidad de aliens
-        numAliens = armada.getEnemyCount();
+        numAliens = 50;
 
         //crear gráficos
         imgBuffered = new BufferedImage(ANCHO_FRAME, ALTO_FRAME, BufferedImage.TYPE_INT_RGB);
@@ -140,20 +156,29 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
                 }
                 repaint();//Actualiza el frame
                 contador++;
+                if(armada.getYposEnemyDown() >= 420){
+                    if(vidas == 1)
+                        break;
+                    thread.interrupt();
+                    armada = new Armada(this);
+                    vidas--;
+                    nuevaRonda();
+                }
             }
-
         }
+        this.setVisible(false);
+        menu.rePaint();
     }
     
     private void definirVelocidad(){
-        if (armada.getEnemyCount() <= 10 && velocidad == 30)
+        if (armada.getEnemyCount() <= 10 && velocidad == 20)
+            velocidad = 10;
+        else if(armada.getEnemyCount() <= 20 && velocidad == 30)
             velocidad = 20;
-        else if(armada.getEnemyCount() <= 20 && velocidad == 40)
+        else if(armada.getEnemyCount() <= 30 && velocidad == 40)
             velocidad = 30;
-        else if(armada.getEnemyCount() <= 30 && velocidad == 50)
+        else if(armada.getEnemyCount() <= 40 && velocidad == 50)
             velocidad = 40;
-        else if(armada.getEnemyCount() <= 40 && velocidad == 60)
-            velocidad = 50;
     }
 
     public boolean isPaused() {
