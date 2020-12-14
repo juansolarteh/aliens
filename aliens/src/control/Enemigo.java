@@ -32,6 +32,10 @@ public class Enemigo implements Globales{
         this.aliens = aliens;
         this.puntaje = puntaje;
     }
+
+    public int getPuntaje() {
+        return puntaje;
+    }
     
     //setea la posición de dicho alien en pantalla
     public void setPosition(int x, int y) {

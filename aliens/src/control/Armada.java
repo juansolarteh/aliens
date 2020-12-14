@@ -53,8 +53,13 @@ public class Armada implements Globales {
     public int getEnemyCount(){
         return enemyCount;
     }
+
+    public int getPuntajeArmada() {
+        return puntajeArmada;
+    }   
     
     private void impact(Enemigo enemigo){
+        puntajeArmada += enemigo.getPuntaje();
         enemigo.setAbatido(true);
         enemyCount--;
     }

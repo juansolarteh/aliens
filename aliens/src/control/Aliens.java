@@ -83,7 +83,6 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
         graficos.drawString("Ronda: " + ronda, 20, 50);
         graficos.drawString("Vidas: " + vidas, 20, 70);
         graficos.drawString("Aliens: " + numAliens, 20, 90);
-        graficos.drawString("Puntaje: " + puntaje, 20, 110);
 
         //dibujamos el buffer que contiene todo
         g.drawImage(imgBuffered, 0, 0, this);
@@ -160,6 +159,7 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
                     if(vidas == 1)
                         break;
                     thread.interrupt();
+                    puntaje += armada.getPuntajeArmada();
                     armada = new Armada(this);
                     vidas--;
                     nuevaRonda();

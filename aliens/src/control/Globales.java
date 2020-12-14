@@ -29,7 +29,7 @@ public interface Globales {
     public static final int ANCHO_FRAME = 650;
     public static final int ALTO_FRAME = 486;
     
-    public static final int VELOCIDAD_DEL_JUEGO = 5;
+    public static final int VELOCIDAD_DEL_JUEGO = 50;
     public static final int VELOCIDAD_DEL_PROYECTILES = 10;
     
     public final String[] ALIEN_IMG = {"src/imagenes/ufo1.png", "src/imagenes/UFO2.png","src/imagenes/ufo2.png","src/imagenes/UFO-32.png","src/imagenes/UFO-32.png"};
