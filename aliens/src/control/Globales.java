@@ -25,13 +25,11 @@ public interface Globales {
     
     public static final int CANTIDAD_VIDAS = 3;    
     
-    public static final int ANCHO_LADRILLO = 30;
-    public static final int ALTO_LADRILLO = 20;
     //Imagen 650*486
     public static final int ANCHO_FRAME = 650;
     public static final int ALTO_FRAME = 486;
     
-    public static final int VELOCIDAD_DEL_JUEGO = 80;
+    public static final int VELOCIDAD_DEL_JUEGO = 50;
     public static final int VELOCIDAD_DEL_PROYECTILES = 10;
     
     public final String[] ALIEN_IMG = {"src/imagenes/ufo1.png", "src/imagenes/UFO2.png","src/imagenes/ufo2.png","src/imagenes/UFO-32.png","src/imagenes/UFO-32.png"};
@@ -39,5 +37,5 @@ public interface Globales {
     public final String EXPLOSION_IMG = "src/imagenes/explosion.jpg"; 
     public final String ICONO_APLICATION = "src/imagenes/icono-aplicacion.png";
     
-    public static final int tiempoEntreDisparo = 1000;
+    public static final int tiempoEntreDisparo = 2000;
 }

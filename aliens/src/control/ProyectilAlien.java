@@ -61,8 +61,7 @@ public class ProyectilAlien extends Proyectil{
             }
             try {
                 if (!aliens.isPaused()) {
-                    if (moverDisparo()||aliens.getBloque().verificarImpacto(getLimitRectangle())||
-                            aliens.getNave().checkBomba(getLimitRectangle())) {                        
+                    if (moverDisparo()) {                        
                         break;//destruir disparo                        
                     }                   
                 }
