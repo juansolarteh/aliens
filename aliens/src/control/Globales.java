@@ -37,5 +37,5 @@ public interface Globales {
     public final String EXPLOSION_IMG = "src/imagenes/explosion.jpg"; 
     public final String ICONO_APLICATION = "src/imagenes/icono-aplicacion.png";
     
-    
+    public static final int tiempoEntreDisparo = 2000;
 }

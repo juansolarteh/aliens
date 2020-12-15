@@ -23,14 +23,14 @@ import java.util.logging.Logger;
 public class Proyectil  implements Runnable,Globales {
     
 
-    private int ANCHO_DISPARO = 5;
-    private int ALTURA_DISPARO = 2; 
+    protected int ANCHO_DISPARO = 5;
+    protected int ALTURA_DISPARO = 2; 
 
-    private int x = 0;
+    protected int x = 0;
 
-    private int y = 0;
+    protected int y = 0;
 
-    private boolean estadoDeDisparo = true;
+    protected boolean estadoDeDisparo = true;
 
 
     
@@ -48,10 +48,28 @@ public class Proyectil  implements Runnable,Globales {
         this.aliens = ie;
         
     }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setG(Graphics g) {
+        this.g = g;
+    }
+
+    public void setAliens(Aliens aliens) {
+        this.aliens = aliens;
+    }
     
-    public void impactar(){
+    
+    
+    private void impactar(){
         estadoDeDisparo = false;
-        y = ALTO_FRAME + 1;
+        thread.interrupt();
     }
     
     public void dispara(){
@@ -61,7 +79,7 @@ public class Proyectil  implements Runnable,Globales {
     }
     
         
-    private boolean moverDisparo() throws SQLException{                
+    protected boolean moverDisparo() throws SQLException{                
         
         y -=  2;//cambiamos la posicion del proyectil
         dibujarProyectil(g);//lo dibujamos

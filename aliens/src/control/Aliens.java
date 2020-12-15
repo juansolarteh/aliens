@@ -20,6 +20,7 @@ import javax.swing.JFrame;
  */
 public final class Aliens extends JFrame implements Globales, Runnable, KeyListener {
 
+    private ControladorDisparoAlien controladorDisparoAlien;
     private int numAliens;
     private int vidas = CANTIDAD_VIDAS;
     ;    
@@ -100,7 +101,9 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
         //Crea la nave
         Nave nave = new Nave(this);
         Armada armada = new Armada(this);
-       
+        controladorDisparoAlien = new ControladorDisparoAlien(this.armada, this);
+        
+        velocidad = VELOCIDAD_DEL_JUEGO;
 
         //cantadidad de aliens
         numAliens = 50;
@@ -139,6 +142,8 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
     public void run() {
         addKeyListener(this);//activo los eventos de teclado
 //        controlNivel();
+        
+        controladorDisparoAlien.ejecutarDisparoAlien();
         while (true) {
 
             try {
@@ -155,19 +160,29 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
                 }
                 repaint();//Actualiza el frame
                 contador++;
-                if(armada.getYposEnemyDown() >= 420){
-                    if(vidas == 1)
+                
+                //Verifica si ya murieron todos los aliens
+                if(armada.getEnemyCount() == 0){
+                    reiniciarPartida();
+                }else if(armada.getYposEnemyBelow() >= 420){//verifica si los aliens tocaron el suelo
+                    if(vidas == 1){
+                        puntaje += armada.getPuntajeArmada();
                         break;
-                    thread.interrupt();
-                    puntaje += armada.getPuntajeArmada();
-                    armada = new Armada(this);
+                    }
                     vidas--;
-                    nuevaRonda();
+                    reiniciarPartida();
                 }
             }
         }
         this.setVisible(false);
         menu.rePaint();
+    }
+    
+    public void reiniciarPartida(){
+        thread.interrupt();
+        puntaje += armada.getPuntajeArmada();
+        armada = new Armada(this);
+        nuevaRonda();
     }
     
     private void definirVelocidad(){
@@ -203,7 +218,7 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
                 proyectil.dispara();//disparamos
             }
         }
-//        
+//      
 
     }
 

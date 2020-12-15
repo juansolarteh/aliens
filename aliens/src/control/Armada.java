@@ -8,6 +8,9 @@ package control;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,6 +23,7 @@ public class Armada implements Globales {
     Aliens aliens = null;
     String direction = "RIGHT";
     private int puntajeArmada = 0;
+    //Thread thread;
 
     public Armada(Aliens ai) {
         this.aliens = ai;
@@ -29,7 +33,7 @@ public class Armada implements Globales {
     public void iniciarArmada(Aliens ai) {
         this.aliens = ai;
         double inicioEnimigoY = 1;
-     
+   
         for (int i = 0; i < ALIENS_POR_FILA; i++) {
             double inicioEnimigoX = 1;
             Image imgEnemigo = new javax.swing.ImageIcon(ALIEN_IMG[i]).getImage();
@@ -40,6 +44,9 @@ public class Armada implements Globales {
             }
             inicioEnimigoY+=1.5;
         }
+        
+//        thread = new Thread(this);
+//        thread.start();
     }
 
     public void dibujarArmada(Graphics g) {
@@ -100,17 +107,18 @@ public class Armada implements Globales {
                 enemy.setPosicionX(enemy.getXPos() - DESPLAZAMIENTO_ALIENS);//cada enemigo se mueve unos pixeles a la izquierda
         //validamos si esta en el borde izquierdo, si lo esta se cambia la direccion 
         if ((this.getXposEnemyLeft() < (32))){
-            moveDown();
+            moveBelow();
             direction = "RIGHT";
         }
     }
     
-    private void moveDown(){
+    private void moveBelow(){
        for(Enemigo[] enemyRow : armandaEnemiga)
             for(Enemigo enemy: enemyRow)
                 enemy.setPosicionY(enemy.getYPos() + (DESPLAZAMIENTO_ALIENS * 2));//cada enemigo se mueve unos pixeles hacia abajo
     }
     
+    // da la la posicion del enemigo que se encuentra mas a la izquierda
     public int getXposEnemyLeft(){
         for (int i = 0; i < FILAS_ALIENS; i++) 
             for (int j = 0; j < ALIENS_POR_FILA; j++)
@@ -119,6 +127,7 @@ public class Armada implements Globales {
         return 0;
     }
     
+    // da la la posicion del enemigo que se encuentra mas a la derecha
     public int getXposEnemyRight(){
         for (int i = FILAS_ALIENS - 1; i >= 0; i--) 
             for (int j = 0; j < ALIENS_POR_FILA; j++)
@@ -127,7 +136,8 @@ public class Armada implements Globales {
         return 0;
     }
     
-    public int getYposEnemyDown(){
+    // da la la posicion del enemigo que se encuentra mas abajo
+    public int getYposEnemyBelow(){
         for (int i = ALIENS_POR_FILA-1; i >= 0; i--) 
             for (int j = 0; j < FILAS_ALIENS; j++)
                 if(armandaEnemiga[i][j].isAbatido() == false)
@@ -135,7 +145,47 @@ public class Armada implements Globales {
         return 0;
     }
     
-    public void setArmyPositionX(){
-        
+    //da la posicion del enemigo que se encuentre mas abajo en la columna row, si no existe
+    //ningun enemigo en esa columna retorna -1
+    public int getRowEnemyBelow(int column){
+        for (int i = ALIENS_POR_FILA-1; i >= 0; i--) 
+            if(armandaEnemiga[i][column].isAbatido() == false)
+                return i;
+        return -1;
+    }
+
+//    @Override
+//    public void run() {
+//        while(true) {
+//            try {
+//                Thread.sleep(3500);
+//            } catch(InterruptedException ie) {
+//                
+//            }
+//            try {
+//                int rowEnemy = -1;
+//                int columnEnemy = 0;
+//                do {                    
+//                    columnEnemy = (int) Math.floor(Math.random()*(9+1));
+//                    rowEnemy = getRowEnemyBelow(columnEnemy);
+//                } while (rowEnemy < 0);
+//                int posX = armandaEnemiga[rowEnemy][columnEnemy].getXPos();
+//                int posY = armandaEnemiga[rowEnemy][columnEnemy].getYPos() + ALTURA_ALIEN;
+//                ProyectilAlien proyectil = new ProyectilAlien(posX, posY, aliens.getGraphics(), aliens);
+//                if (proyectil.getEstadoDeDisparo()) {
+//                    proyectil.dispara();//disparamos
+//                }
+//            } catch (Exception ex) {
+//                Logger.getLogger(ProyectilAlien.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//    }
+    
+    public int getPositionXEnemy(int rowEnemy, int columnEnemy){
+        return armandaEnemiga[rowEnemy][columnEnemy].getXPos();
+    }
+    
+    public int getPositionYEnemy(int rowEnemy, int columnEnemy){
+        return armandaEnemiga[rowEnemy][columnEnemy].getYPos();
     }
 }
