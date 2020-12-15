@@ -66,12 +66,6 @@ public class Proyectil  implements Runnable,Globales {
     }
     
     
-    
-    private void impactar(){
-        estadoDeDisparo = false;
-        thread.interrupt();
-    }
-    
     public void dispara(){
         thread = new Thread(this);
         thread.start();
@@ -122,7 +116,8 @@ public class Proyectil  implements Runnable,Globales {
             }
             try {
                 if (!aliens.isPaused()) {
-                    if (moverDisparo() || aliens.getArmada().verifyImpact(getLimitRectangle())) {                        
+                    if (moverDisparo() || aliens.getArmada().verifyImpact(getLimitRectangle())||
+                            aliens.getBloque().verificarImpacto(getLimitRectangle())) {                        
                         break;//destruir disparo                        
                     }                   
              

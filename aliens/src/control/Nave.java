@@ -7,6 +7,7 @@ package control;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 
 /**
  *
@@ -43,18 +44,17 @@ public class Nave implements  Globales {
 
     
     //Si una bomba impacto a la nave
-    public boolean checkBomba(int xBomba, int yBomba) {
-        
-        //vamos a mirar si la nave ha sido impactada
-        if ((yBomba >= (posicionY+20)) && (yBomba <= (posicionY+(ALTURA_JUGADOR)))) {
-             //Si en el eje Y está bien, ahora miraremos en el eje X
-            if ((xBomba >= posicionX) && (xBomba <= (posicionX+ANCHO_JUGADOR))) {
-                //La nave fue herida!
-                naveHerida = true;
-                return true;
-            }
-        } 
+    public boolean checkBomba(Rectangle limitMissile) {
+        if (getLimitRectangle().intersects(limitMissile)) {
+            this.naveHerida=true;
+            return true;
+        }
         return false;
+    }
+    
+    
+    public Rectangle getLimitRectangle(){
+        return new Rectangle(posicionX, posicionY, ANCHO_JUGADOR, ALTURA_JUGADOR);
     }
 
     public void ImpactadoPorUnAlien()throws InterruptedException{
@@ -78,6 +78,9 @@ public class Nave implements  Globales {
     
     public boolean isNaveHerida() {
         return naveHerida;
+    }
+    public void setNaveHerida(boolean naveHerida){
+        this.naveHerida=naveHerida;
     }
 
 }
