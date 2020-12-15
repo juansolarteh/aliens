@@ -17,6 +17,7 @@ public class Bloque implements Globales{
     Ladrillo[][] Matriz = new Ladrillo[2][3];
     Ladrillo[][] Matriz2 = new Ladrillo[2][3];
     Ladrillo[][] Matriz3 = new Ladrillo[2][3];
+    
     Aliens aliens;
     Armada armada; 
     Thread thread;
@@ -82,24 +83,34 @@ public class Bloque implements Globales{
         lad.setHayimpacto(true);
     }
     
-    public ArrayList<Rectangle> getLimiteBloques(){
-        ArrayList<Rectangle> rectangulos = getLimiteBloque(Matriz);
-        rectangulos.addAll(getLimiteBloque(Matriz2));
-        rectangulos.addAll(getLimiteBloque(Matriz3));
-        return rectangulos;
+    public ArrayList<Ladrillo> getLadrillosEncima(){
+        ArrayList<Ladrillo> ladrillos = getLadrillosPorMatriz(Matriz);
+        ladrillos.addAll(getLadrillosPorMatriz(Matriz2));
+        ladrillos.addAll(getLadrillosPorMatriz(Matriz3));
+        return ladrillos;
     }
     
-    private ArrayList<Rectangle> getLimiteBloque(Ladrillo[][] ld){
-        ArrayList<Rectangle> rectangulos = new ArrayList();
+    private ArrayList<Ladrillo> getLadrillosPorMatriz(Ladrillo[][] ld){
+        ArrayList<Ladrillo> ladrillos = new ArrayList();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 2; j++) {
                 if (ld[j][i].isHayimpacto()==false) {        
-                    rectangulos.add(ld[j][i].getLimitRectangle());
+                    ladrillos.add(ld[j][i]);
                     break;
                 }
             }
         }
-        return rectangulos;
+        return ladrillos;
     }
+    public void verifyImpactAlien(){
+        ArrayList<Ladrillo> ladrillos = getLadrillosEncima();
+        ArrayList<Boolean> resultadosImpacto = aliens.getArmada().verifyImpactBloques(ladrillos);
+        for (int i = 0; i < ladrillos.size(); i++) {
+            if (resultadosImpacto.get(i)) {
+                ladrillos.get(i).setHayimpacto(true);
+            }
+        }
+    }
+    
     
 }

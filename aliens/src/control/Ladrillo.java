@@ -44,6 +44,7 @@ public class Ladrillo {
     public void setHayimpacto(boolean hayimpacto) {
         this.hayimpacto = hayimpacto;
     }
+
     public Rectangle getLimitRectangle(){
         return new Rectangle(X, Y, ANCHO_LADRILLO, ALTO_LADRILLO);
     } 

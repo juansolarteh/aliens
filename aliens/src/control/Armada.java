@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,7 +85,25 @@ public class Armada implements Globales {
         }
         return false;
     }
-    
+    private boolean verifyImpactBloque(Rectangle limitBloque){
+        for (int i = 0; i < FILAS_ALIENS; i++) {
+            for (int j = ALIENS_POR_FILA-1; j >= 0; j--) {
+                if(armandaEnemiga[j][i].isAbatido() == false)
+                    if(armandaEnemiga[j][i].getLimitRectangle().intersects(limitBloque)){
+                        return true;
+                    }else
+                        break;
+            }
+        }
+        return false;
+    }
+    public ArrayList<Boolean> verifyImpactBloques(ArrayList<Ladrillo> list){
+        ArrayList<Boolean> listBoolean = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            listBoolean.add(verifyImpactBloque(list.get(i).getLimitRectangle()));
+        }
+        return listBoolean;
+    }
     public void moverAliens(){
         if (!aliens.isPaused())
             if(direction == "RIGHT")
@@ -150,10 +169,8 @@ public class Armada implements Globales {
     public int getRowEnemyBelow(int column){
         for (int i = ALIENS_POR_FILA-1; i >= 0; i--) 
             if(armandaEnemiga[i][column].isAbatido() == false){
-                System.out.println("posicion en fila: " + i);
                 return i;
             }
-        System.out.println("posicion en fila: -1");   
         return -1;
     }
 

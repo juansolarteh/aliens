@@ -92,6 +92,7 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
 
         //dibujamos la armada y la nave con los mismo graficos
         armada.dibujarArmada(graficos);
+        bloque.verifyImpactAlien();
         bloque.dibujarBloques(graficos);
         nave.dibujarNave(graficos);
         
@@ -163,6 +164,7 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
     }
 
     public void run() {
+        
         addKeyListener(this);//activo los eventos de teclado
 //        controlNivel();
         while(vidas > 0){
@@ -207,14 +209,14 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
     }
     
     private void definirVelocidad(){
-        if (armada.getEnemyCount() <= 10 && velocidad == 50)
+        if (armada.getEnemyCount() <= 10 && velocidad == 30)
+            velocidad = 20;
+        else if(armada.getEnemyCount() <= 20 && velocidad == 40)
+            velocidad = 30;
+        else if(armada.getEnemyCount() <= 30 && velocidad == 50)
             velocidad = 40;
-        else if(armada.getEnemyCount() <= 20 && velocidad == 60)
+        else if(armada.getEnemyCount() <= 40 && velocidad == 60)
             velocidad = 50;
-        else if(armada.getEnemyCount() <= 30 && velocidad == 70)
-            velocidad = 60;
-        else if(armada.getEnemyCount() <= 40 && velocidad == 80)
-            velocidad = 70;
     }
 
     public boolean isPaused() {
@@ -229,6 +231,14 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
         }
         if (!pausa && e.getKeyCode() == KeyEvent.VK_RIGHT && !(nave.getPosicionX() > (ANCHO_FRAME - ANCHO_JUGADOR - 32))) {
             nave.setX(nave.getPosicionX() + DESPLAZAMIENTO_JUGADOR);//nos movemos unos pixeles a la derecha
+        }
+        if(e.getKeyCode()==KeyEvent.VK_P){
+
+            if (pausa==true) {
+                pausa=false;
+            }else{
+                pausa=true;
+            }
         }
 //      
 //        //evento de disparo
