@@ -19,20 +19,25 @@ public class ControladorDisparoAlien implements Globales, Runnable{
     ProyectilAlien proyectil;
     Armada armada; 
     Thread thread;
+    boolean activo = true;
 
     public ControladorDisparoAlien(Armada armada, Aliens aliens) {
         this.aliens = aliens;
         this.armada = armada;
     }
     
-    public void ejecutarDisparoAlien(){
+    public void iniciarDisparoAlienAutomatico(){
         thread = new Thread(this);
         thread.start();
     }
     
+    public void frenarDisparoAutomatico(){
+        activo = false;
+    }
+    
     @Override
     public void run() {
-        while(true) {
+        while(activo) {
             try {
                 Thread.sleep(tiempoEntreDisparo);
             } catch(InterruptedException ie) {

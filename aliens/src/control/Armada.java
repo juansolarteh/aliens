@@ -145,12 +145,15 @@ public class Armada implements Globales {
         return 0;
     }
     
-    //da la posicion del enemigo que se encuentre mas abajo en la columna row, si no existe
+    //da la posicion del enemigo que se encuentre mas abajo en la columna column, si no existe
     //ningun enemigo en esa columna retorna -1
     public int getRowEnemyBelow(int column){
         for (int i = ALIENS_POR_FILA-1; i >= 0; i--) 
-            if(armandaEnemiga[i][column].isAbatido() == false)
+            if(armandaEnemiga[i][column].isAbatido() == false){
+                System.out.println("posicion en fila: " + i);
                 return i;
+            }
+        System.out.println("posicion en fila: -1");   
         return -1;
     }
 

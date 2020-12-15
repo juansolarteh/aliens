@@ -23,7 +23,7 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
     private ControladorDisparoAlien controladorDisparoAlien;
     private int numAliens;
     private int vidas = CANTIDAD_VIDAS;
-    ;    
+    private Bloque bloque;
     private int puntaje = 0;
     int contador;// variable para controlar la velocidad de movimiento de los aliens
     int reguladorDeVelocidad;
@@ -41,16 +41,31 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
 
     private int ronda;
     private int velocidad;
+    private boolean rondaActiva = false;
     
     private Menu menu;
     
     public Armada getArmada(){
         return armada;
     }
+
+    public int getVidas() {
+        return vidas;
+    }
     
     public int getPuntaje(){
         return puntaje;
     }
+    public Bloque getBloque(){
+        return this.bloque;
+    }
+    public Nave getNave(){
+        return this.nave;
+    }
+
+    public boolean isRondaActiva() {
+        return rondaActiva;
+    } 
 
     public Aliens(String titulo, Menu menu) {
         super(titulo);
@@ -77,8 +92,9 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
 
         //dibujamos la armada y la nave con los mismo graficos
         armada.dibujarArmada(graficos);
+        bloque.dibujarBloques(graficos);
         nave.dibujarNave(graficos);
-
+        
         //cadenas de texto dibujadas en el frame
         graficos.setColor(Color.CYAN);
         graficos.drawString("Ronda: " + ronda, 20, 50);
@@ -98,9 +114,16 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
     }
 
     public void nuevaRonda() {
+
+        
         //Crea la nave
         Nave nave = new Nave(this);
-        Armada armada = new Armada(this);
+        this.nave.setNaveHerida(false);
+        
+        //Crea la armada 
+        //Armada armada = new Armada(this);
+        bloque = new Bloque(this,graficos);
+        armada = new Armada(this);
         controladorDisparoAlien = new ControladorDisparoAlien(this.armada, this);
         
         velocidad = VELOCIDAD_DEL_JUEGO;
@@ -120,7 +143,7 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
 
         //acumulador de rondas sobrevividas
         ronda++;
-
+        rondaActiva = true;
         //comienza a correr el thread
         iniciaJuego();
 
@@ -142,35 +165,33 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
     public void run() {
         addKeyListener(this);//activo los eventos de teclado
 //        controlNivel();
-        
-        controladorDisparoAlien.ejecutarDisparoAlien();
-        while (true) {
+        while(vidas > 0){
+            controladorDisparoAlien.iniciarDisparoAlienAutomatico();
+            while (true) {
 
-            try {
-                Thread.sleep(velocidad);//tiempo de espera de movimiento de los aliens
-            } catch (InterruptedException ex) {
+                try {
+                    Thread.sleep(velocidad);//tiempo de espera de movimiento de los aliens
+                } catch (InterruptedException ex) {
 
-            }
-
-            if (!pausa) {//determino si está en pausa el juego
-                if (contador >= reguladorDeVelocidad) {
-                    armada.moverAliens();
-                    definirVelocidad();
-                    contador = 0;    
                 }
-                repaint();//Actualiza el frame
-                contador++;
-                
-                //Verifica si ya murieron todos los aliens
-                if(armada.getEnemyCount() == 0){
-                    reiniciarPartida();
-                }else if(armada.getYposEnemyBelow() >= 420){//verifica si los aliens tocaron el suelo
-                    if(vidas == 1){
-                        puntaje += armada.getPuntajeArmada();
-                        break;
+
+                if (!pausa) {//determino si está en pausa el juego
+                    if (contador >= reguladorDeVelocidad) {
+                        armada.moverAliens();
+                        definirVelocidad();
+                        contador = 0;    
                     }
-                    vidas--;
-                    reiniciarPartida();
+                    repaint();//Actualiza el frame
+                    contador++; 
+                    //Verifica si ya murieron todos los aliens
+                    if(armada.getEnemyCount() == 0){
+                        reiniciarJuego();
+                        break;
+                    }else if(armada.getYposEnemyBelow() >= 420 || nave.isNaveHerida()){//verifica si los aliens tocaron el suelo
+                        vidas--;
+                        reiniciarJuego();
+                        break;              
+                    }
                 }
             }
         }
@@ -178,22 +199,22 @@ public final class Aliens extends JFrame implements Globales, Runnable, KeyListe
         menu.rePaint();
     }
     
-    public void reiniciarPartida(){
-        thread.interrupt();
+    private void reiniciarJuego(){
+        rondaActiva = false;
         puntaje += armada.getPuntajeArmada();
-        armada = new Armada(this);
+        controladorDisparoAlien.frenarDisparoAutomatico();
         nuevaRonda();
     }
     
     private void definirVelocidad(){
-        if (armada.getEnemyCount() <= 10 && velocidad == 20)
-            velocidad = 10;
-        else if(armada.getEnemyCount() <= 20 && velocidad == 30)
-            velocidad = 20;
-        else if(armada.getEnemyCount() <= 30 && velocidad == 40)
-            velocidad = 30;
-        else if(armada.getEnemyCount() <= 40 && velocidad == 50)
+        if (armada.getEnemyCount() <= 10 && velocidad == 50)
             velocidad = 40;
+        else if(armada.getEnemyCount() <= 20 && velocidad == 60)
+            velocidad = 50;
+        else if(armada.getEnemyCount() <= 30 && velocidad == 70)
+            velocidad = 60;
+        else if(armada.getEnemyCount() <= 40 && velocidad == 80)
+            velocidad = 70;
     }
 
     public boolean isPaused() {

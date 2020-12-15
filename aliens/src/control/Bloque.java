@@ -7,6 +7,7 @@ package control;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 /**
  *
@@ -80,15 +81,25 @@ public class Bloque implements Globales{
     private void impacto(Ladrillo lad){
         lad.setHayimpacto(true);
     }
-//    @Override
-//    public void run() {
-//        while (true){
-//            try {
-//                
-//                dibujarBloques();
-//            } catch (Exception e) {
-//            }
-//        }
-//    }
+    
+    public ArrayList<Rectangle> getLimiteBloques(){
+        ArrayList<Rectangle> rectangulos = getLimiteBloque(Matriz);
+        rectangulos.addAll(getLimiteBloque(Matriz2));
+        rectangulos.addAll(getLimiteBloque(Matriz3));
+        return rectangulos;
+    }
+    
+    private ArrayList<Rectangle> getLimiteBloque(Ladrillo[][] ld){
+        ArrayList<Rectangle> rectangulos = new ArrayList();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 2; j++) {
+                if (ld[j][i].isHayimpacto()==false) {        
+                    rectangulos.add(ld[j][i].getLimitRectangle());
+                    break;
+                }
+            }
+        }
+        return rectangulos;
+    }
     
 }

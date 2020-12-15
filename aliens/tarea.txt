@@ -1,15 +1,15 @@
-alien mov izq-der ----------------------------
-aliens mov abajo -----------------------------
-hacer ladrillos  ----------------------------- posible mejora
-romper ladrillos por disparo
-romper ladrillos por toque de aliens
-aumentar velocidad aliens --------------------
-perder cuando bajen aliens --------------------
-ganar al eliminar todos los aliens (ronda)
-tener un puntaje de la partida ----------------
-menu del juego --------------------------------
-poner el mejor puntaje de juego en el menu-----
-al ganar iniciar una nueva ronda
-matar aliens ---------------------------------
-disparo de los aliens
-perder cuando un alien le dispare
+alien mov izq-der ------------
+aliens mov abajo ---------------
+hacer ladrillos --------------
+romper ladrillos por disparo -----
+romper ladrillos por toque de aliens 
+aumentar velocidad aliens -----------
+perder cuando bajen aliens ------
+ganar al eliminar todos los aliens (ronda) ------
+tener un puntaje de la partida ------
+menu del juego ------
+poner el mejor puntaje de juego en el menu ------
+al ganar iniciar una nueva ronda ------
+matar aliens ---------
+disparo de los aliens -------
+perder cuando un alien le dispare --------

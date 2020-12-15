@@ -66,12 +66,6 @@ public class Proyectil  implements Runnable,Globales {
     }
     
     
-    
-    private void impactar(){
-        estadoDeDisparo = false;
-        thread.interrupt();
-    }
-    
     public void dispara(){
         thread = new Thread(this);
         thread.start();
@@ -86,7 +80,7 @@ public class Proyectil  implements Runnable,Globales {
         
        
         //validamos de que el disparo haya salido de la pantalla
-        if (y > ALTO_FRAME) {
+        if (y < 2) {
             estadoDeDisparo = false;//para no dibujar mas el proyectil
             return true;
         }
@@ -100,6 +94,8 @@ public class Proyectil  implements Runnable,Globales {
             g.setColor(Color.CYAN);
             g.fillRect(x, y, ANCHO_DISPARO,ALTURA_DISPARO );
         }
+        
+        
     }
     
     public Rectangle getLimitRectangle(){
@@ -120,7 +116,8 @@ public class Proyectil  implements Runnable,Globales {
             }
             try {
                 if (!aliens.isPaused()) {
-                    if (moverDisparo() || aliens.getArmada().verifyImpact(getLimitRectangle())) {                        
+                    if (moverDisparo() || aliens.getArmada().verifyImpact(getLimitRectangle())||
+                            aliens.getBloque().verificarImpacto(getLimitRectangle()) || aliens.isRondaActiva() == false) { 
                         break;//destruir disparo                        
                     }                   
              
